@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l’ingrédient{% endblock %}
+
+{% block body %}
+    {% include '_crud/_form_card.html.twig' with {title: 'Modifier l’ingrédient', back: path('app_ingredient_index')} %}
+{% endblock %}

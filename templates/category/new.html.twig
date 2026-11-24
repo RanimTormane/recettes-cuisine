@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle catégorie{% endblock %}
+
+{% block body %}
+    {% include '_crud/_form_card.html.twig' with {title: 'Nouvelle catégorie', back: path('app_category_index')} %}
+{% endblock %}

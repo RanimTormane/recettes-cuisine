@@ -1,0 +1,17 @@
+{# Carte de formulaire commune à tous les "new" et "edit". Variables : form, title, back #}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="h3 mb-4">{{ title }}</h1>
+            <div class="card card-body border">
+                {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-brand px-4"><i class="bi bi-check-lg me-2"></i>Enregistrer</button>
+                        <a href="{{ back }}" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>

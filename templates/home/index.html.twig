@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+    {# ===== Bandeau de recherche (recherche par nom et par catégorie) ===== #}
+      <section class="hero">
+        <div class="container">
+            <div class="row align-items-center g-4">
+
+                {# Colonne de gauche : texte + recherche #}
+                <div class="col-lg-7">
+                    <h1 class="mb-3">Qu’est-ce qu’on cuisine aujourd’hui ?</h1>
+                    <p class="lead mb-4">Cherchez une recette par son nom ou par sa catégorie.</p>
+
+                    {# Étape 8 : remplacer action="#" par {{ path('app_recipe_index') }} #}
+                    <form class="hero-search" method="get" action="#">
+                        <label class="visually-hidden" for="q">Nom de la recette</label>
+                        <input id="q" name="q" type="search" class="form-control" placeholder="Nom de la recette">
+
+                        <label class="visually-hidden" for="category">Catégorie</label>
+                        <select id="category" name="category" class="form-select">
+                            <option value="">Toutes les catégories</option>
+                            {# Étape 8 : boucle {% for category in categories %} #}
+                        </select>
+
+                        <button class="btn btn-brand px-4" type="submit"><i class="bi bi-search me-2"></i>Rechercher</button>
+                    </form>
+                </div>
+
+                {# Colonne de droite : image qui tourne #}
+                <div class="col-lg-5 text-center d-none d-lg-block hero-header">
+                    <img src="images/plat.png" alt="" class="img-fluid">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {# ===== Accès aux trois gestions ===== #}
+    <section class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <a class="entry-link" href="#">
+                    <i class="bi bi-journal-text"></i>
+                    <h2 class="h5">Recettes</h2>
+                    <p class="mb-0">Ajouter, consulter, modifier et supprimer vos recettes.</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a class="entry-link" href="#">
+                    <i class="bi bi-tags"></i>
+                    <h2 class="h5">Catégories</h2>
+                    <p class="mb-0">Entrées, plats, desserts : classez vos recettes.</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a class="entry-link" href="#">
+                    <i class="bi bi-basket"></i>
+                    <h2 class="h5">Ingrédients</h2>
+                    <p class="mb-0">Gérez la liste des ingrédients utilisés.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {# ===== Dernières recettes (la variable "recipes" sera envoyée par HomeController à l’étape 3) ===== #}
+    <section class="container pb-4">
+        <h2 class="h3 mb-4">Dernières recettes</h2>
+        <div class="row g-4">
+            {% for recipe in recipes|default([]) %}
+                <div class="col-md-6 col-lg-4">
+                    <article class="recipe-card h-100">
+                        <div class="recipe-thumb"><i class="bi bi-egg-fried"></i></div>
+                        <div class="p-3">
+                            <span class="badge badge-cat">{{ recipe.category.name ?? 'Sans catégorie' }}</span>
+                            <h3 class="h5 mt-2">{{ recipe.name }}</h3>
+                            <p class="text-muted mb-0">{{ recipe.description|default('')|slice(0, 90) }}…</p>
+                        </div>
+                    </article>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="bi bi-egg"></i>
+                        <p class="mb-0">Aucune recette pour le moment. Ajoutez la première pour la voir ici.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+{% endblock %}

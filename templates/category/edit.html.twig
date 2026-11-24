@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la catégorie{% endblock %}
+
+{% block body %}
+    {% include '_crud/_form_card.html.twig' with {title: 'Modifier la catégorie', back: path('app_category_index')} %}
+{% endblock %}

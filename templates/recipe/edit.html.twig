@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la recette{% endblock %}
+
+{% block body %}
+    {% include '_crud/_form_card.html.twig' with {title: 'Modifier la recette', back: path('app_recipe_index')} %}
+{% endblock %}

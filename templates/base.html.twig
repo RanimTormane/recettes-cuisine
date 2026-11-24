@@ -1,0 +1,109 @@
+
+{% set app_name = 'Recetta' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Accueil{% endblock %} · {{ app_name }}</title>
+<link rel="icon" type="image/png" href="{{ asset('images/Logo Recetta.png') }}"height="70" width="70">
+    {# Polices, Bootstrap 5 et icônes via CDN #}
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    {# Ton CSS #}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <noscript><style>.page-loader{display:none}</style></noscript>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+    {# ===== Écran de chargement ===== #}
+    <div id="spinner" class="page-loader" aria-hidden="true">
+        <div class="spinner-border text-beet" style="width:3rem;height:3rem" role="status"></div>
+    </div>
+
+    {# ===== Menu ===== #}
+    <header>
+        <nav class="navbar navbar-expand-lg site-nav sticky-top p-0">
+            <div class="container">
+              <a class="navbar-brand d-flex align-items-center gap-2 m-0 py-2" href="{{ path('app_home') }}">
+    <img src="{{ asset('images/Logo Recetta.png') }}" alt="{{ app_name }}" height="70">
+    <span class="text-beet">{{ app_name }}</span>
+</a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Ouvrir le menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainMenu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link {{ app.current_route == 'app_home' ? 'active' }}" href="{{ path('app_home') }}">Accueil</a></li>
+                        {# À activer quand les CRUD existent : remplacer href="#" par {{ path('app_recipe_index') }}, app_category_index, app_ingredient_index #}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_recipe_index') }}">Recettes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_category_index') }}">Catégories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_ingredient_index') }}">Ingrédients</a></li>
+                    </ul>
+                    {# Plus tard : {{ path('app_recipe_new') }} #}
+                    <a class="btn btn-brand nav-cta" href="#"><i class="bi bi-plus-lg me-2"></i>Ajouter une recette</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {# ===== Messages flash ===== #}
+    {% set flashes = app.flashes %}
+    {% if flashes|length %}
+        <div class="container mt-3">
+            {% for type, messages in flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {# ===== Contenu de chaque page (chaque page gère son propre .container) ===== #}
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    {# ===== Pied de page ===== #}
+    <footer class="site-footer mt-5 pt-5">
+        <div class="container pb-4">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <h5 class="text-white mb-3"><i class="bi bi-egg-fried me-2"></i>{{ app_name }}</h5>
+                    <p class="mb-0">Un carnet pour ajouter, classer et retrouver vos recettes, avec leurs ingrédients et leurs étapes.</p>
+                </div>
+                <div class="col-6 col-lg-3 offset-lg-1">
+                    <h5 class="text-white mb-3">Naviguer</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{{ path('app_home') }}">Accueil</a></li>
+                        <li><a href="#">Recettes</a></li>
+                        <li><a href="#">Catégories</a></li>
+                        <li><a href="#">Ingrédients</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <h5 class="text-white mb-3">Le projet</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li>Symfony 7</li>
+                        <li>Twig et Bootstrap 5</li>
+                        <li>Doctrine ORM</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center py-3">© {{ 'now'|date('Y') }} {{ app_name }} · Projet Symfony 7</div>
+    </footer>
+
+    <a href="#" id="back-to-top" class="btn btn-brand back-to-top" aria-label="Retour en haut"><i class="bi bi-arrow-up"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
