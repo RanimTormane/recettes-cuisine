@@ -18,13 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-class PreviewController extends AbstractController
+class RecipeController extends AbstractController
 {
     // Quelle entité correspond à quel "kind"
     private const ENTITIES = [
         'recipe'     => Recipe::class,
-        'category'   => Category::class,
-        'ingredient' => Ingredient::class,
+      
+      
     ];
 
     // Symfony fournit l'EntityManager : c'est lui qui écrit dans la base
@@ -84,48 +84,14 @@ class PreviewController extends AbstractController
         return $this->submit($request, $this->recipeForm($recipe), $recipe, 'recipe/edit.html.twig', 'app_recipe_index', ['recipe' => $recipe]);
     }
 
-    // ===== Catégories et ingrédients (même logique, seul "kind" change) =====
 
-    #[Route('/category/', name: 'app_category_index')]
-    public function categoryIndex(): Response
-    {
-        return $this->render('category/index.html.twig', [
-            'categories' => $this->em->getRepository(Category::class)->findBy([], ['name' => 'ASC']),
-        ]);
-    }
+   
 
-    #[Route('/ingredient/', name: 'app_ingredient_index')]
-    public function ingredientIndex(): Response
-    {
-        return $this->render('ingredient/index.html.twig', [
-            'ingredients' => $this->em->getRepository(Ingredient::class)->findBy([], ['name' => 'ASC']),
-        ]);
-    }
-
-#[Route('/category/new', name: 'app_category_new', defaults: ['kind' => 'category'], methods: ['GET', 'POST'])]
-    #[Route('/ingredient/new', name: 'app_ingredient_new', defaults: ['kind' => 'ingredient'])]
-    public function simpleNew(Request $request, string $kind): Response
-    {
-        $class = self::ENTITIES[$kind];
-        $item = new $class();   // new Category() ou new Ingredient()
-
-        return $this->submit($request, $this->nameForm($item), $item, $kind.'/new.html.twig', 'app_'.$kind.'_index');
-    }
-
-    #[Route('/category/{id}/edit', name: 'app_category_edit', requirements: ['id' => '\d+'], defaults: ['kind' => 'category'])]
-    #[Route('/ingredient/{id}/edit', name: 'app_ingredient_edit', requirements: ['id' => '\d+'], defaults: ['kind' => 'ingredient'])]
-    public function simpleEdit(Request $request, string $kind, int $id): Response
-    {
-        $item = $this->find(self::ENTITIES[$kind], $id);
-
-        return $this->submit($request, $this->nameForm($item), $item, $kind.'/edit.html.twig', 'app_'.$kind.'_index');
-    }
+   
 
     // ===== Suppression (les trois entités) =====
 
     #[Route('/recipe/{id}/delete', name: 'app_recipe_delete', requirements: ['id' => '\d+'], methods: ['POST'], defaults: ['kind' => 'recipe'])]
-    #[Route('/category/{id}/delete', name: 'app_category_delete', requirements: ['id' => '\d+'], methods: ['POST'], defaults: ['kind' => 'category'])]
-    #[Route('/ingredient/{id}/delete', name: 'app_ingredient_delete', requirements: ['id' => '\d+'], methods: ['POST'], defaults: ['kind' => 'ingredient'])]
     public function delete(Request $request, string $kind, int $id): Response
     {
         $item = $this->find(self::ENTITIES[$kind], $id);
